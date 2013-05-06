@@ -16,7 +16,7 @@ for i in range(1, len(sys.argv)):
     lines.append("================================== START OF sys.argv%s==========================\n" % i)
     with open(sys.argv[i]) as fobj:
         for line in fobj:
-            lines.append(line.encode('utf-8'))
+            lines.append(line.decode('utf-8'))
     lines.append("================================== END OF sys.argv%s==========================\n" % i)        
 
 s = "".join(lines)
