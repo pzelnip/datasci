@@ -102,7 +102,7 @@ def process_args():
         
     result = {}
     result['sentiment_file'] = sys.argv[1]
-    result['tweet_file'] = "test.txt" #sys.argv[2]
+    result['tweet_file'] = sys.argv[2]
     return result
 
 
