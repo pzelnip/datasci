@@ -23,7 +23,8 @@ def read_hashtags_from_file(tweet_file):
                 data = json.loads(line)
                 tags.extend([tag['text'].encode('utf-8') for tag in data['entities']['hashtags']])
             except Exception as e:
-                print("Error processing line: %s" % e)
+                # Gross, must just swallow the exception
+                pass
             
     return tags
 
