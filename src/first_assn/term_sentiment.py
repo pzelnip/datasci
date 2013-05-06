@@ -1,5 +1,5 @@
 '''
-Assignment 1, Problem 2 -- derive the sentiment of each tweet
+Assignment 1, Problem 3 -- derive the sentiment of unseen words
 
 Created on May 6, 2013
 
@@ -7,6 +7,8 @@ Created on May 6, 2013
 '''
 import sys
 import json
+from itertools import groupby
+from operator import itemgetter
 
 
 def load_base_sentiment_data(sentiment_file):
@@ -37,27 +39,57 @@ def read_tweets_from_file(tweet_file):
     return tweets
 
 
+def get_basic_sentiment_for_tweet(tweet, sentiments):
+    '''
+    Given a single tweet, generates the base sentiment score & returns a list
+    of words not seen, along with the base sentiment score for this tweet
+    '''
+    words = tweet.split()
+    total = 0
+    unknown_words = []
+    for word in words:
+        wordscore = sentiments.get(word, None)
+        if wordscore is None:
+            unknown_words.append(word)
+        else:
+            total += wordscore
+    return [(word, total) for word in unknown_words]
+
+
+def score_unknown_word(scores):
+    '''
+    Scores the unknown word using the heuristic of the sum of the sentiment
+    scores for each tweet the word appears in, divided by the number of 
+    occurences of the word
+    '''
+    sumscore = sum(scores)
+    count = len(scores)
+    return sumscore / count
+
+
 def get_sentiments_for_tweets(tweets, sentiments):
     '''
     Given a list of tweets, and a collection of sentiment scores, return a list
     of tuples mapping each tweet to its total sentiment score
     '''
     result = []
+    scores = []
     for tweet in tweets:
-        words = tweet.split()
-        total = 0
-        for word in words:
-            total += sentiments.get(word, 0)
-        result.append((tweet, total))
+        scores.extend(get_basic_sentiment_for_tweet(tweet, sentiments))
+        
+    for word, group in groupby(scores, itemgetter(0)):
+        newscore = score_unknown_word([score for _, score in group])
+        result.append((word, newscore))
+        
     return result
 
 
-def dump_results(tweet_sentiments):
+def dump_results(scores):
     '''
-    Print the results of a call to get_sentiments_for_tweets() to STDOUT
+    Print the results to STDOUT
     '''
-    for (tweet, sentiment) in tweet_sentiments:
-        print("<%s:%s>" % (tweet, sentiment))
+    for (word, score) in scores:
+        print("%s %s" % (word, score))
 
 
 def process_args():
