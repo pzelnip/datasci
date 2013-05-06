@@ -1,5 +1,6 @@
-datasci_course_materials
-========================
+Introduction To Data Science
+============================
 
-Public repository for course materials for the Spring 2013 session of Introduction to Data Science, an online coursera course.
+This repo contains my work for the Introduction to Data Science course on Coursera I am taking.
 
+https://www.coursera.org/course/datasci
