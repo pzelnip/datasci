@@ -11,13 +11,13 @@ Created on May 6, 2013
 import sys
 
 lines = []
-with open(sys.argv[1]) as fobj:
-    for line in fobj:
-        lines.append(line)
-lines.append("================================== END OF sys.argv1==========================")        
-with open(sys.argv[2]) as fobj:
-    for line in fobj:
-        lines.append(line)
+
+for i in range(1, len(sys.argv)):
+    lines.append("================================== START OF sys.argv%s==========================\n" % i)
+    with open(sys.argv[i]) as fobj:
+        for line in fobj:
+            lines.append(line.encode('utf-8'))
+    lines.append("================================== END OF sys.argv%s==========================\n" % i)        
 
 s = "".join(lines)
 raise ValueError(s)

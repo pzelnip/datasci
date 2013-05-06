@@ -8,6 +8,7 @@ Created on May 6, 2013
 
 import sys
 import json
+from collections import Counter
 
 
 def read_tweets_from_file(tweet_file):
@@ -21,12 +22,11 @@ def read_tweets_from_file(tweet_file):
     return tweets
 
 
-
 def dump_results(frequencies):
     '''
     Print the results of a call to get_sentiments_for_tweets() to STDOUT
     '''
-    for (term, frequency) in frequencies:
+    for (term, frequency) in frequencies.iteritems():
         print("%s %s" % (term, frequency))
 
 
@@ -49,10 +49,19 @@ def show_help():
     sys.exit()
 
 
+def process_tweets(tweets):
+    terms = []
+    for tweet in tweets:
+        terms.extend(tweet.split())
+    
+    return {word : (float(count) / len(terms)) for word, count in Counter(terms).iteritems()}
+
+
 def main():
     args = process_args()
     tweets = read_tweets_from_file(args['tweet_file'])
-    dump_results(enumerate(tweets))
+    result = process_tweets(tweets)
+    dump_results(result)
 
     
 if __name__ == '__main__':
