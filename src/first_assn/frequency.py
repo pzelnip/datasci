@@ -10,8 +10,6 @@ import sys
 import json
 
 
-
-
 def read_tweets_from_file(tweet_file):
     '''
     Given a file containing raw JSON as returned by the Twitter API, returns
@@ -24,12 +22,12 @@ def read_tweets_from_file(tweet_file):
 
 
 
-def dump_results(tweet_sentiments):
+def dump_results(frequencies):
     '''
     Print the results of a call to get_sentiments_for_tweets() to STDOUT
     '''
-    for (tweet, sentiment) in tweet_sentiments:
-        print("<%s:%s>" % (tweet, sentiment))
+    for (term, frequency) in frequencies:
+        print("%s %s" % (term, frequency))
 
 
 def process_args():
@@ -54,7 +52,7 @@ def show_help():
 def main():
     args = process_args()
     tweets = read_tweets_from_file(args['tweet_file'])
-    dump_results(tweets)
+    dump_results(enumerate(tweets))
 
     
 if __name__ == '__main__':
