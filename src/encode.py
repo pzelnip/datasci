@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from base64 import *
+from base64 import b64encode
 import sys
 
 if len(sys.argv) > 1: # we have an input file!
@@ -10,14 +10,10 @@ else:
 
 with open(sys.argv[1]) as fobj:
     lines = "".join(fobj.readlines())
-    s = (standard_b64encode(lines))
+    s = (b64encode(lines))
 
-template = ''' 
+print(''' 
 import base64 as foo
-
 string = """%s"""
-
-prog = foo.b64decode(string)
-exec prog 
-'''
-print template % s
+exec (foo.b64decode(string))
+''' % s)
