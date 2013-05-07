@@ -31,9 +31,15 @@ def read_tweets_from_file(tweet_file):
     Given a file containing raw JSON as returned by the Twitter API, returns
     a list of extracted tweets
     '''
+    tweets = []
     with open(tweet_file) as fobj:
-        data = json.load(fobj)
-        tweets = [tweet['text'].encode('utf-8') for tweet in data['results']]
+        for line in fobj:
+            try:
+                data = json.loads(line)
+                tweets.append(data['text'].decode('utf-8'))
+            except Exception as e:
+                # Gross, must just swallow the exception
+                pass
     return tweets
 
 
@@ -56,8 +62,8 @@ def dump_results(tweet_sentiments):
     '''
     Print the results of a call to get_sentiments_for_tweets() to STDOUT
     '''
-    for (tweet, sentiment) in tweet_sentiments:
-        print("<%s:%s>" % (tweet, sentiment))
+    for (_, sentiment) in tweet_sentiments:
+        print("%s" % (sentiment))
 
 
 def process_args():
