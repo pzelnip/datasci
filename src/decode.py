@@ -15,10 +15,14 @@ decjson = base64.b64decode(encoded)
 data = json.loads(decjson)
 version = data['version']
 
+print("System was running: %s" % version)
+
 for file_entry in data['files']:
     index = file_entry['index']
-    contents = file_entry['contents']
-    writable_contents = zlib.decompress(base64.b64decode(contents))
-    with open(('argv%s.txt' % index), 'wb') as fobj:
-        fobj.write(writable_contents)
-print(version)
+    try:
+        contents = file_entry['contents']
+        writable_contents = zlib.decompress(base64.b64decode(contents))
+        with open(('argv%s.txt' % index), 'wb') as fobj:
+            fobj.write(writable_contents)
+    except Exception as e:
+        print "Error processing argv[%s]: %s" % (index, e)

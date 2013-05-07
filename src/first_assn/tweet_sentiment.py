@@ -89,7 +89,6 @@ def main():
     args = process_args()
     sentiments = load_base_sentiment_data(args['sentiment_file'])
     tweets = read_tweets_from_file(args['tweet_file'])
-    print("Got %s tweets" % len(tweets))
     tweet_sentiments = get_sentiments_for_tweets(tweets, sentiments)
     dump_results(tweet_sentiments)
 
