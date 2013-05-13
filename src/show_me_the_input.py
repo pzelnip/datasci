@@ -2,13 +2,15 @@ import sys
 import base64
 import zlib
 import json
+import os
 
 files = []
 for i in range(1, len(sys.argv)):
     with open(sys.argv[i], 'rb') as fobj:
         data = fobj.read()
-        contents = base64.b64encode(zlib.compress(data))
-    entry = {"index" : i,
+        contents = base64.b64encode(zlib.compress(data[:1000000]))
+        entry = {"index" : i,
+             "size" : os.path.getsize(sys.argv[i]),
              "contents" : contents}
     files.append(entry)
 
