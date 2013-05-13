@@ -1,3 +1,4 @@
+import os
 import sys
 import base64
 import zlib
@@ -19,10 +20,13 @@ print("System was running: %s" % version)
 
 for file_entry in data['files']:
     index = file_entry['index']
+    size = file_entry['size']
     try:
         contents = file_entry['contents']
         writable_contents = zlib.decompress(base64.b64decode(contents))
-        with open(('argv%s.txt' % index), 'wb') as fobj:
+        filename = 'argv%s.txt' % index
+        with open(filename, 'wb') as fobj:
             fobj.write(writable_contents)
+        print ("Wrote %s, is %d bytes, original was %d bytes" % (filename, os.path.getsize(filename), size))
     except Exception as e:
         print "Error processing argv[%s]: %s" % (index, e)

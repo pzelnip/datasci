@@ -68,8 +68,8 @@ def score_unknown_word(scores):
     scores for each tweet the word appears in, divided by the number of 
     occurences of the word
     '''
-    sumscore = sum(scores)
-    count = len(scores)
+    sumscore = sum(scores) * 1.0
+    count = len(scores) * 1.0
     return sumscore / count
 
 
@@ -94,7 +94,7 @@ def dump_results(scores):
     '''
     Print the results to STDOUT
     '''
-    for (word, score) in scores:
+    for (word, score) in scores.iteritems():
         print("%s %s" % (word, score))
 
 
@@ -122,7 +122,7 @@ def main():
     args = process_args()
     sentiments = load_base_sentiment_data(args['sentiment_file'])
     tweets = read_tweets_from_file(args['tweet_file'])
-    tweet_sentiments = get_sentiments_for_tweets(tweets, sentiments)
+    tweet_sentiments = dict(get_sentiments_for_tweets(tweets, sentiments))
     dump_results(tweet_sentiments)
 
     
