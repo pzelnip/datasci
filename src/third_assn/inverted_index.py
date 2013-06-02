@@ -11,15 +11,13 @@ mr = MapReduce()
 def mapper(record):
     key = record[0]
     value = record[1]
+    
     words = value.split()
     for w in words:
-        mr.emit_intermediate(w, 1)
+        mr.emit_intermediate(w, key)
 
 def reducer(key, values):
-    total = 0
-    for v in values:
-        total += v
-    mr.emit((key, total))
+    mr.emit((key, list(set(values))))
 
 
 def main():
