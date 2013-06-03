@@ -11,9 +11,7 @@ mr = MapReduce()
 
 
 def mapper(record):
-    nucleotide = record[1]
-    nucleotide = nucleotide[:-10]
-    mr.emit_intermediate(nucleotide, "does not matter")
+    mr.emit_intermediate(record[1][:-10], "does not matter")
 
 
 def reducer(key, values):
