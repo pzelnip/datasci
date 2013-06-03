@@ -5,6 +5,7 @@ Created on Jun 3, 2013
 '''
 from MapReduce import MapReduce
 from operator import mul
+from itertools import izip
 import sys
 
 MATRIX_A_NUM_ROWS = 5
@@ -40,7 +41,7 @@ def reducer(key, values):
     
     # Do scalar product of the two vectors
     result = 0
-    for tpl in zip(avect, bvect):
+    for tpl in izip(avect, bvect):
         result += mul(*tpl)
     
     # emit final result
